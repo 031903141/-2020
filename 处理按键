@@ -1,0 +1,80 @@
+void keyEvent(RenderWindow* window) {
+    Event e;//事件变量
+    int dx = 0;//偏移量
+    bool rotate = false;//表示是否旋转
+    // pollEvent 从事件队列中取出一个事件 
+    while (window->pollEvent(e))
+    {
+        if (e.type == Event::Closed)
+            window->close();
+
+        if (e.type == Event::KeyPressed) {
+            switch (e.key.code) {
+            case Keyboard::Up:
+                rotate = true;
+                break;
+            case Keyboard::Left:
+                dx = -1;
+                break;
+            case Keyboard::Right:
+                dx = 1;
+                break;
+            default:
+                break;
+            }
+        }
+    }
+    // 按键事件处理，下降 
+    if (Keyboard::isKeyPressed(Keyboard::Down)) {
+        delay = SPEED_QUICK;
+    }
+
+    if (dx != 0) {
+        moveLeftRight(dx);
+    }
+
+    //////Rotate////// 
+    if (rotate) {
+        doRotate();
+    }
+}
+ void keyEvent_2(RenderWindow* window) {
+    Event e;//事件变量
+    int dx = 0;//偏移量
+    bool rotate = false;//表示是否旋转
+    // pollEvent 从事件队列中取出一个事件 
+    while (window->pollEvent(e))
+    {
+        if (e.type == Event::Closed)
+            window->close();
+
+        if (e.type == Event::KeyPressed) {
+            switch (e.key.code) {
+            case Keyboard::W:
+                rotate = true;
+                break;
+            case Keyboard::A:
+                dx = -1;
+                break;
+            case Keyboard::D:
+                dx = 1;
+                break;
+            default:
+                break;
+            }
+        }
+    }
+    // 按键事件处理，下降 
+    if (Keyboard::isKeyPressed(Keyboard::S)) {
+        delay_2 = SPEED_QUICK_2;
+    }
+
+    if (dx != 0) {
+        moveLeftRight_2(dx);
+    }
+
+    //////Rotate////// 
+    if (rotate) {
+        doRotate_2();
+    }
+}
