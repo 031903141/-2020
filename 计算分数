@@ -1,0 +1,24 @@
+void initScore() {
+    if (!font.loadFromFile("Sansation.ttf")) {
+        exit(1);
+    }
+
+    textScore.setFont(font); // font is a sf::Font 
+    textScore.setCharacterSize(30);// set the character size 
+    textScore.setFillColor(sf::Color::White); // set the color 
+    textScore.setStyle(sf::Text::Bold); // set the text style 
+    textScore.setPosition(255, 175);
+    textScore.setString("0");
+}
+void initScore_2() {
+    if (!font.loadFromFile("Sansation.ttf")) {
+        exit(1);
+    }
+
+    textScore_2.setFont(font); // font is a sf::Font 
+    textScore_2.setCharacterSize(30);// set the character size 
+    textScore_2.setFillColor(sf::Color::White); // set the color 
+    textScore_2.setStyle(sf::Text::Bold); // set the text style 
+    textScore_2.setPosition(570, 175);
+    textScore_2.setString("0");
+}
