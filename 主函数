@@ -1,0 +1,148 @@
+#include <SFML/Graphics.hpp> 
+#include <SFML/Audio.hpp> 
+#include <time.h> 
+using namespace sf;
+
+const int ROW_COUNT = 20;//行1
+const int COL_COUNT = 10;//列1
+const int ROW_COUNT_2 = 20;//行2
+const int COL_COUNT_2 = 27;//列2
+
+const float SPEED_NORMAL = 0.3;
+const float SPEED_QUICK = 0.05;
+const float SPEED_NORMAL_2 = 0.3;
+const float SPEED_QUICK_2 = 0.05;
+float delay = SPEED_NORMAL;
+float delay_2 = SPEED_NORMAL_2;
+
+int table[ROW_COUNT][COL_COUNT] = { 0 };
+int table_2[ROW_COUNT_2][COL_COUNT_2] = { 0 };
+//若table[i][j]==0 表示第i行第j列，是空白的，否则表示有方块
+//若table[i][j]==1 表示第i行第j列，而且是第一种方块（使用第一种颜色）
+
+struct Point {
+    int x, y;
+} curBlock[4], BakBlock[4], curBlock_2[4], BakBlock_2[4];
+
+int blocks[7][4] = {
+    1,3,5,7, // I 
+    2,4,5,7, // Z 1型 
+    3,5,4,6, // Z 2型 
+    3,5,4,7, // T 
+    2,3,5,7, // L 
+    3,5,7,6, // J 
+    2,3,4,5, // 田 
+};
+
+
+int blockIndex;    //表示玩家一当前方块的种类
+int blockIndex_2;  //表示玩家二当前方块的种类
+
+Sound sou;
+
+// 显示分数 
+Font font;
+Text textScore;
+Text textScore_2;
+int score = 0;
+int score_2 = 0;
+
+int main()
+{
+    // 播放背景音乐 
+    Music music;
+    if (!music.openFromFile("bg2.wav"))
+        return -1; // error 
+    music.setLoop(true);
+    music.play();
+
+    // 加载音效 
+    SoundBuffer xiaochu;
+    if (!xiaochu.loadFromFile("xiaochu.wav")) {
+        return -1;
+    }
+
+    // 设置声音缓存 
+    sou.setBuffer(xiaochu);
+    //sou.play(); // 播放音频 
+
+    srand(time(0));
+
+    // 创建窗口 
+    RenderWindow window(
+        VideoMode(638, 416),   //窗口模式 
+        " Tetris ");   //标题 
+
+    // 创建表示图片的精灵 
+    Texture t1, t2, t22;
+    t1.loadFromFile("image/bg22.jpg");
+    t2.loadFromFile("image/tiles.png");
+    t22.loadFromFile("image/tiles.png");
+    Sprite spriteBg(t1);
+    Sprite spriteBlock(t2);
+    Sprite spriteBlock_2(t2);
+
+    initScore();
+    initScore_2();
+
+    // 用来计算时间 
+    float timer = 0; //delay = 0.3;
+    float timer_2 = 0;
+
+    // 计时器Clock 
+    Clock clock,clock_2;
+
+    //绘制游戏
+    window.draw(spriteBg);
+    window.display();  //显示窗口
+
+    // 生成第一个方块
+    newBlock();  
+    newBlock_2();
+    
+    while (window.isOpen())
+    {
+        float time = clock.getElapsedTime().asSeconds();//获取从clock被重启或启动之后，到现在的时间
+        clock.restart(); //计时器重启及时 
+        timer += time;
+
+        float time_2 = clock_2.getElapsedTime().asSeconds();//获取从clock被重启或启动之后，到现在的时间
+        clock_2.restart(); //计时器重启及时 
+        timer_2 += time_2;
+
+        //等待用户按下按键，并处理
+        keyEvent(&window);
+        keyEvent_2(&window);
+        if (timer_2 >= delay_2) {
+            drop_2(); //下降一个位置 
+            timer_2 = 0;
+        }
+        
+        clearLine_2(); // 清除满行 
+        delay_2 = SPEED_NORMAL;
+
+        if (timer > delay) {
+            drop(); //下降一个位置 
+            timer = 0;
+        }
+
+        clearLine(); // 清除满行 
+        delay = SPEED_NORMAL;
+        
+        /////////draw////////// 
+        window.clear(Color::White);
+
+        window.draw(spriteBg);
+
+        //绘制方块
+        drawBlocks(&window, &spriteBlock);
+        drawBlocks_2(&window, &spriteBlock_2);
+
+        window.draw(textScore); //显示分数 
+        window.draw(textScore_2);
+        window.display();
+    }
+    system("pause");
+    return 0;
+}
+
