@@ -1,0 +1,70 @@
+void newBlock() {
+    blockIndex = 1 + rand() % 7; // 1..7 
+    int n = blockIndex - 1;//rand() % 7; 
+    for (int i = 0; i < 4; i++)
+    {
+        curBlock[i].x = blocks[n][i] % 2;
+        curBlock[i].y = blocks[n][i] / 2;
+    }
+}
+void newBlock_2() {
+    blockIndex_2 = 1 + rand() % 7; // 1..7 
+    int n = blockIndex_2 - 1;//rand() % 7; 
+    for (int i = 0; i < 4; i++)
+    {
+        curBlock_2[i].x = blocks[n][i] % 2+17;
+        curBlock_2[i].y = blocks[n][i] / 2;
+    }
+}
+
+void drawBlocks(RenderWindow* window, Sprite* spriteBlock) {
+    // 绘制已降落完毕的方块 
+    for (int i = 0; i < ROW_COUNT; i++)
+        for (int j = 0; j < COL_COUNT; j++)
+        {
+            if (table[i][j] != 0) {
+                //画小方块
+                //需要先使用Sprite表示完整的方块图片
+                spriteBlock->setTextureRect(IntRect(table[i][j] * 18, 0, 18, 18));
+                spriteBlock->setPosition(j * 18, i * 18);
+                //设置偏移量
+                spriteBlock->move(28, 31);
+                window->draw(*spriteBlock);
+            }
+        }
+
+    // 绘制当前方块 
+    for (int i = 0; i < 4; i++)
+    {
+        spriteBlock->setTextureRect(IntRect(blockIndex * 18, 0, 18, 18));
+        spriteBlock->setPosition(curBlock[i].x * 18, curBlock[i].y * 18);
+        spriteBlock->move(28, 31);
+        window->draw(*spriteBlock);
+    }
+}
+
+void drawBlocks_2(RenderWindow* window, Sprite* spriteBlock) {
+    // 绘制已降落完毕的方块 
+    for (int i = 0; i < ROW_COUNT_2; i++)
+        for (int j = 15; j < COL_COUNT_2; j++)
+        {
+            if (table_2[i][j] != 0) {
+                //画小方块
+                //需要先使用Sprite表示完整的方块图片
+                spriteBlock->setTextureRect(IntRect(table_2[i][j] * 18, 0, 18, 18));
+                spriteBlock->setPosition(j * 18, i * 18);
+                //设置偏移量
+                spriteBlock->move(28, 31);
+                window->draw(*spriteBlock);
+            }
+        }
+
+    // 绘制当前方块 
+    for (int i = 0; i < 4; i++)
+    {
+        spriteBlock->setTextureRect(IntRect(blockIndex_2 * 18, 0, 18, 18));
+        spriteBlock->setPosition(curBlock_2[i].x * 18, curBlock_2[i].y * 18);
+        spriteBlock->move(28, 31);
+        window->draw(*spriteBlock);
+    }
+}
