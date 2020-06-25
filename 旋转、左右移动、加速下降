@@ -1,0 +1,104 @@
+//旋转
+void doRotate(void) {
+    if (blockIndex == 7) {  // 田字形，不需要旋转 
+        return;
+    }
+
+    for (int i = 0; i < 4; i++) {
+        BakBlock[i] = curBlock[i];  //备份当前方块 
+    }
+
+    Point p = curBlock[1]; //旋转中心 
+    for (int i = 0; i < 4; i++)
+    {
+        struct Point tmp = curBlock[i];
+        curBlock[i].x = p.x - tmp.y + p.y;
+        curBlock[i].y = p.y + tmp.x - p.x;
+    }
+    if (!check()) {
+        for (int i = 0; i < 4; i++) {
+            curBlock[i] = BakBlock[i];
+        }
+    }
+}
+void doRotate_2(void) {
+    if (blockIndex_2 == 7) {  // 田字形，不需要旋转 
+        return;
+    }
+
+    for (int i = 0; i < 4; i++) {
+        BakBlock_2[i] = curBlock_2[i];  //备份当前方块 
+    }
+
+    Point p = curBlock_2[1]; //旋转中心 
+    for (int i = 0; i < 4; i++)
+    {
+        struct Point tmp = curBlock_2[i];
+        curBlock_2[i].x = p.x - tmp.y + p.y;
+        curBlock_2[i].y = p.y + tmp.x - p.x;
+    }
+    if (!check_2()) {
+        for (int i = 0; i < 4; i++) {
+            curBlock_2[i] = BakBlock_2[i];
+        }
+    }
+}
+
+//左移offset=-1，右移offse=1
+void moveLeftRight(int offeset) {
+    for (int i = 0; i < 4; i++) {
+        BakBlock[i] = curBlock[i];  //备份当前方块 
+        curBlock[i].x += offeset;   //更新当前方块 
+    }
+
+    if (!check()) {
+        // 把当前方块还原到备份方块 
+        for (int i = 0; i < 4; i++) {
+            curBlock[i] = BakBlock[i];
+        }
+    }
+}
+void moveLeftRight_2(int offeset) {
+    for (int i = 0; i < 4; i++) {
+        BakBlock_2[i] = curBlock_2[i];  //备份当前方块 
+        curBlock_2[i].x += offeset;   //更新当前方块 
+    }
+
+    if (!check_2()) {
+        // 把当前方块还原到备份方块 
+        for (int i = 0; i < 4; i++) {
+            curBlock_2[i] = BakBlock_2[i];
+        }
+    }
+}
+
+void drop() {
+    for (int i = 0; i < 4; i++) {
+        BakBlock[i] = curBlock[i];
+        curBlock[i].y += 1;
+    }
+
+
+    if (!check()) {
+        for (int i = 0; i < 4; i++) {
+            // 设置标记，“固化”对应位置 
+            table[BakBlock[i].y][BakBlock[i].x] = blockIndex;
+        }
+        newBlock();
+    }
+}
+void drop_2() {
+    for (int i = 0; i < 4; i++) {
+        BakBlock_2[i] = curBlock_2[i];
+        curBlock_2[i].y += 1;
+    }
+
+
+    if (!check_2()) {
+        for (int i = 0; i < 4; i++) {
+            // 设置标记，“固化”对应位置 
+            table_2[BakBlock_2[i].y][BakBlock_2[i].x] = blockIndex_2;
+        }
+        newBlock_2();
+    }
+}
