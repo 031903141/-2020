@@ -1,0 +1,52 @@
+void clearLine() {
+    /////check lines////////// 
+    int k = ROW_COUNT - 1;
+    for (int i = ROW_COUNT - 1; i > 0; i--)
+    {
+        int count = 0;
+        for (int j = 0; j < COL_COUNT; j++)
+        {
+            if (table[i][j]) count++;
+            table[k][j] = table[i][j];
+        }
+
+        // 如果没有满行,就继续扫描上一行 
+        // 如果已经满行,k不变,在这个满行内,存放下一次的扫描结果 
+        if (count < COL_COUNT) k--;
+        else {
+            score += 10;
+            addLine_2();
+            sou.play();
+        }
+    }
+
+    char tmp[16];
+    sprintf_s(tmp, "%d", score);
+    textScore.setString(tmp);
+}
+void clearLine_2() {
+    /////check lines////////// 
+    int k = ROW_COUNT_2 - 1;
+    for (int i = ROW_COUNT_2 - 1; i > 0; i--)
+    {
+        int count = 0;
+        for (int j = 0; j < COL_COUNT_2; j++)
+        {
+            if (table_2[i][j]) count++;
+            table_2[k][j] = table_2[i][j];
+        }
+
+        // 如果没有满行,就继续扫描上一行 
+        // 如果已经满行,k不变,在这个满行内,存放下一次的扫描结果 
+        if (count < COL_COUNT_2) k--;
+        else {
+            score_2 += 10;
+            addLine();
+            sou.play();
+        }
+    }
+
+    char tmp[16];
+    sprintf_s(tmp, "%d", score_2);
+    textScore_2.setString(tmp);
+}
